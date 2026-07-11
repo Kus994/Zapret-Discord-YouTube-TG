@@ -954,14 +954,15 @@ class ZapretPage(BasePage):
 
         hint_frame = QFrame()
         hint_frame.setStyleSheet(
-            "QFrame { background: rgba(245,166,35,0.04); border: 1px solid rgba(245,166,35,0.1);"
+            "QFrame { background: rgba(76,175,125,0.06); border: 1px solid rgba(76,175,125,0.15);"
             " border-radius: 8px; padding: 8px; }"
         )
         hint_lay = QVBoxLayout(hint_frame)
         hint_lay.setContentsMargins(12, 8, 12, 8)
         self._hint = QLabel("Выберите пресет из списка ниже")
-        self._hint.setStyleSheet("color:#a09080; font-size:12px; background:transparent;")
+        self._hint.setStyleSheet("color:#8ac8a0; font-size:12px; background:transparent;")
         self._hint.setWordWrap(True)
+        self._hint.setMinimumHeight(36)
         hint_lay.addWidget(self._hint)
         trl.addWidget(hint_frame)
 
@@ -1167,7 +1168,7 @@ class ZapretPage(BasePage):
         if bats:
             for bat in bats:
                 item = QListWidgetItem(bat)
-                item.setData(Qt.UserRole, str(ZAPRET_DIR / name / bat))
+                item.setData(Qt.UserRole, str(_ver_to_path(name) / bat))
                 self._bat_list.addItem(item)
             self._bat_list.setCurrentRow(0)
             self.log("Пресетов: {}".format(len(bats)), "OK")
@@ -1180,8 +1181,80 @@ class ZapretPage(BasePage):
         item = self._bat_list.item(row)
         if not item: return
         name = item.text()
-        hint = self._HINTS.get(name, "Нажмите «Запустить» для активации.")
+        bat_path = item.data(Qt.UserRole)
+        # Генерируем описание из параметров bat-файла
+        hint = self._generate_preset_hint(name, bat_path)
         self._hint.setText(hint)
+
+    def _generate_preset_hint(self, name, bat_path):
+        """Анализирует bat-файл и возвращает описание стратегии."""
+        if not bat_path or not Path(bat_path).exists():
+            return self._HINTS.get(name, "Нажмите «Запустить» для активации.")
+
+        try:
+            text = Path(bat_path).read_text(encoding="utf-8-sig", errors="replace")
+            text = re.sub(r'\^\s*\n', ' ', text)  # убираем переносы строк
+        except Exception:
+            return self._HINTS.get(name, "Нажмите «Запустить» для активации.")
+
+        parts = []
+
+        # Определяем метод обхода
+        if '--dpi-desync=fake' in text:
+            parts.append("Fake (подмена пакетов)")
+        elif '--dpi-desync=multisplit' in text:
+            parts.append("Multisplit (разбиение пакетов)")
+        elif '--dpi-desync=disorder' in text:
+            parts.append("Disorder (перестановка)")
+        elif '--dpi-desync=datagramspli' in text:
+            parts.append("DatagramSplit")
+
+        # Определяем протоколы
+        protos = []
+        if '--filter-udp=443' in text:
+            protos.append("QUIC (UDP 443)")
+        if '--filter-tcp=443' in text:
+            protos.append("HTTPS (TCP 443)")
+        if '--filter-tcp=80' in text:
+            protos.append("HTTP (TCP 80)")
+        if 'discord' in text.lower():
+            protos.append("Discord")
+        if '--filter-tcp=2053' in text or '--filter-tcp=2083' in text:
+            protos.append("Discord Media")
+        if 'google' in text.lower() and '--filter-tcp' in text:
+            protos.append("Google/YouTube")
+        if protos:
+            parts.append("Протоколы: " + ", ".join(protos))
+
+        # Fake TLS?
+        if 'fake' in text.lower() and 'tls' in text.lower():
+            parts.append("TLS: подмена ClientHello")
+        if 'simple' in name.lower():
+            parts.append("Простая подмена (Simple)")
+        if 'auto' in name.lower():
+            parts.append("Автоподбор параметров")
+
+        # Специфические особенности
+        if '--dpi-desync-repeats=' in text:
+            m = re.search(r'--dpi-desync-repeats=(\d+)', text)
+            if m:
+                repeats = int(m.group(1))
+                parts.append("Повторы: {}".format(repeats))
+
+        if '--dpi-desync-split-pos=' in text:
+            m = re.search(r'--dpi-desync-split-pos=(\d+)', text)
+            if m:
+                parts.append("Split pos: {}".format(m.group(1)))
+
+        if '--ipset=' in text:
+            parts.append("IPSet: включён (фильтр по IP)")
+
+        # Краткое имя
+        short_name = Path(name).stem
+        if not parts:
+            return "Пресет: {}".format(short_name)
+
+        return "{}: {}".format(short_name, " | ".join(parts))
 
     def _select_category(self, cat_name):
         presets = self._CATEGORIES.get(cat_name, [])
