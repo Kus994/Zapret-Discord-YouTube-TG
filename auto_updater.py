@@ -313,7 +313,7 @@ def check_kus_pro_update(log_func=None):
     from theme import VERSION
 
     try:
-        api = "https://api.github.com/repos/Kus993/KusXXX/releases/latest"
+        api = "https://api.github.com/repos/Kus993/Zapret-Discord-YouTube-TG/releases/latest"
         headers = {
             "User-Agent": "KUS-Pro/3.0",
             "Accept": "application/vnd.github+json",
