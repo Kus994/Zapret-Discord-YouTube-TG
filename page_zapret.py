@@ -1318,9 +1318,12 @@ class ZapretPage(BasePage):
         if not ver or ver.startswith("—"):
             self.log("Сначала скачайте zapret (вкладка «Установка»).", "WARN")
             return
+
+        # Останавливаем предыдущую стратегию если запущена
         if _is_running():
-            self.log("Zapret уже запущен.", "WARN")
-            return
+            self.log("Останавливаю предыдущую стратегию...", "INFO")
+            _fn_stop(lambda *a: None, lambda *a: None)
+
         bat_path = str(_ver_to_path(ver) / "general.bat")
         ver_dir = str(_ver_to_path(ver))
         if not Path(bat_path).exists():
@@ -1443,8 +1446,11 @@ class ZapretPage(BasePage):
         bat_name = self._get_bat_name()
         if not bat_name:
             self.log("Выберите пресет из списка.", "WARN"); return
+
+        # Останавливаем предыдущую стратегию если запущена
         if _is_running():
-            self.log("Zapret уже запущен.", "WARN"); return
+            self.log("Останавливаю предыдущую стратегию...", "INFO")
+            _fn_stop(lambda *a: None, lambda *a: None)
 
         bat_path = str(_ver_to_path(ver) / bat_name)
         ver_dir  = str(_ver_to_path(ver))
