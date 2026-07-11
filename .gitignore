@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.pyo
+*.spec
+dist/
+build/
+run_log.txt
+crash_log.txt
+*.tmp
+.vscode/
+.idea/

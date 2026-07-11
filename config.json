@@ -1,0 +1,63 @@
+{
+  "game_mode": {
+    "apps": [
+      {
+        "label": "Wallpaper Engine",
+        "process": "wallpaper64.exe",
+        "path": "",
+        "enabled": true
+      },
+      {
+        "label": "PowerToys",
+        "process": "PowerToys.exe",
+        "path": "",
+        "enabled": true
+      },
+      {
+        "label": "Windhawk",
+        "process": "windhawk.exe",
+        "path": "",
+        "enabled": true
+      },
+      {
+        "label": "QuickLook",
+        "process": "QuickLook.exe",
+        "path": "",
+        "enabled": true
+      },
+      {
+        "label": "AnVir Task Manager",
+        "process": "AnVir.exe",
+        "path": "",
+        "enabled": true
+      },
+      {
+        "label": "Everything",
+        "process": "Everything.exe",
+        "path": "",
+        "enabled": true
+      },
+      {
+        "label": "AnyDesk",
+        "process": "AnyDesk.exe",
+        "path": "",
+        "enabled": true
+      }
+    ],
+    "disable_transparency": true,
+    "enable_taskbar_autohide": true,
+    "auto_return_enabled": false,
+    "auto_return_minutes": 60,
+    "hotkey": ""
+  },
+  "autostart_zapret": false,
+  "autostart_tg_proxy": false,
+  "tg_proxy_port": 8080,
+  "start_minimized": false,
+  "auto_update_enabled": true,
+  "auto_update_zapret": true,
+  "auto_update_tg_proxy": true,
+  "tg_bot_token": "",
+  "tg_bot_chat_id": "",
+  "autostart_zapret_preset": "general (FAKE TLS AUTO ALT3).bat"
+}
