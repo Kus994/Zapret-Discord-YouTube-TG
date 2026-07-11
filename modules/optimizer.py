@@ -167,6 +167,26 @@ def optimize_system(log_func, progress_func, options=None):
         step += 1
         progress_func(_pct())
 
+    # 9. Игровые оптимизации
+    gaming_opts = {k: options.get(k, False) for k in ("gpu", "power", "game_mode", "multimedia")}
+    if any(gaming_opts.values()):
+        from modules.gaming_optimizer import (
+            optimize_gpu, optimize_power_plan,
+            optimize_game_mode_registry, optimize_multimedia_priority,
+        )
+        if gaming_opts.get("gpu"):
+            optimize_gpu(log_func)
+            step += 1
+        if gaming_opts.get("power"):
+            optimize_power_plan(log_func)
+            step += 1
+        if gaming_opts.get("game_mode"):
+            optimize_game_mode_registry(log_func)
+            step += 1
+        if gaming_opts.get("multimedia"):
+            optimize_multimedia_priority(log_func)
+            step += 1
+
     progress_func(1.0)
     from modules.cleanup import human_size
     log_func("=== Оптимизация завершена. Освобождено: {} ===".format(human_size(total_freed)), "OK")

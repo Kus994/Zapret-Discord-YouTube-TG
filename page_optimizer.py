@@ -92,6 +92,32 @@ class OptimizerPage(BasePage):
 
         self._content.addWidget(sys_card)
 
+        # Опции — Игровые оптимизации
+        gaming_card = self.card("Игровые оптимизации",
+                                "Для максимального FPS в играх")
+
+        self._cb_gpu = QCheckBox("GPU: включить HwSchMode + NVIDIA vibrance")
+        self._cb_gpu.setChecked(True)
+        self._cb_gpu.setStyleSheet("color:{}; background:transparent;".format(TEXT_MAIN))
+        gaming_card.lay.addWidget(self._cb_gpu)
+
+        self._cb_power = QCheckBox("Питание: план высокой производительности")
+        self._cb_power.setChecked(True)
+        self._cb_power.setStyleSheet("color:{}; background:transparent;".format(TEXT_MAIN))
+        gaming_card.lay.addWidget(self._cb_power)
+
+        self._cb_game_mode = QCheckBox("Game Mode Windows + отключить Game DVR")
+        self._cb_game_mode.setChecked(True)
+        self._cb_game_mode.setStyleSheet("color:{}; background:transparent;".format(TEXT_MAIN))
+        gaming_card.lay.addWidget(self._cb_game_mode)
+
+        self._cb_multimedia = QCheckBox("Приоритеты мультимедиа и сети")
+        self._cb_multimedia.setChecked(True)
+        self._cb_multimedia.setStyleSheet("color:{}; background:transparent;".format(TEXT_MAIN))
+        gaming_card.lay.addWidget(self._cb_multimedia)
+
+        self._content.addWidget(gaming_card)
+
     def _get_options(self):
         return {
             "temp": self._cb_temp.isChecked(),
@@ -101,6 +127,10 @@ class OptimizerPage(BasePage):
             "prefetch": self._cb_prefetch.isChecked(),
             "services": self._cb_services.isChecked(),
             "dns": self._cb_dns.isChecked(),
+            "gpu": self._cb_gpu.isChecked(),
+            "power": self._cb_power.isChecked(),
+            "game_mode": self._cb_game_mode.isChecked(),
+            "multimedia": self._cb_multimedia.isChecked(),
         }
 
     def _estimate(self):
@@ -123,11 +153,13 @@ class OptimizerPage(BasePage):
             self.log("Выберите хотя бы одну опцию.", "WARN")
             return
 
-        # Подтверждение если отключаются службы
-        if options["services"]:
+        # Подтверждение если отключаются службы или игровые оптимизации
+        gaming_active = any(options.get(k) for k in ("gpu", "power", "game_mode", "multimedia"))
+        if options["services"] or gaming_active:
             reply = QMessageBox.question(
                 self, "Подтверждение",
-                "Будут отключены ненужные службы Windows.\nПродолжить?",
+                "Будут применены оптимизации Windows"
+                + (" (включая игровые)" if gaming_active else "") + ".\nПродолжить?",
                 QMessageBox.Yes | QMessageBox.No, QMessageBox.No,
             )
             if reply != QMessageBox.Yes:

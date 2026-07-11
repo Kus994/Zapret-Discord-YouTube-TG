@@ -204,6 +204,85 @@ class GameModePage(BasePage):
         hotkey_row.addStretch()
         self._content.addLayout(hotkey_row)
 
+        # ══════════════════════════════════════════════════════════════ #
+        #  ИГРОВЫЕ ОПТИМИЗАЦИИ (из RustNightVision + OptimizerCore)     #
+        # ══════════════════════════════════════════════════════════════ #
+        gaming_card = self.card("Игровые оптимизации Windows",
+                                "Максимальный FPS и минимальный пинг")
+
+        info_gaming = QLabel(
+            "Автоматическая оптимизация GPU, сети, реестра и служб.\n"
+            "Все изменения обратимы и не затрагивают критические компоненты."
+        )
+        info_gaming.setWordWrap(True)
+        info_gaming.setStyleSheet("color:#6a6258; font-size:11px; background:transparent;")
+        gaming_card.lay.addWidget(info_gaming)
+
+        # Галочки оптимизаций
+        gm_cfg = cfg.get("gaming_optimizations", {})
+        opts_grid = QHBoxLayout()
+        opts_grid.setSpacing(20)
+
+        col1 = QVBoxLayout()
+        col1.setSpacing(6)
+        self._cb_gm_gpu = QCheckBox("GPU: HwSchMode + NVIDIA vibrance")
+        self._cb_gm_gpu.setChecked(gm_cfg.get("gpu", True))
+        self._cb_gm_gpu.setStyleSheet("color:{}; background:transparent;".format(TEXT_MAIN))
+        col1.addWidget(self._cb_gm_gpu)
+
+        self._cb_gm_power = QCheckBox("Питание: высокая производительность")
+        self._cb_gm_power.setChecked(gm_cfg.get("power", True))
+        self._cb_gm_power.setStyleSheet("color:{}; background:transparent;".format(TEXT_MAIN))
+        col1.addWidget(self._cb_gm_power)
+
+        self._cb_gm_game_mode = QCheckBox("Game Mode Windows + отключить Game DVR")
+        self._cb_gm_game_mode.setChecked(gm_cfg.get("game_mode", True))
+        self._cb_gm_game_mode.setStyleSheet("color:{}; background:transparent;".format(TEXT_MAIN))
+        col1.addWidget(self._cb_gm_game_mode)
+
+        self._cb_gm_multimedia = QCheckBox("Приоритеты мультимедиа и сети")
+        self._cb_gm_multimedia.setChecked(gm_cfg.get("multimedia", True))
+        self._cb_gm_multimedia.setStyleSheet("color:{}; background:transparent;".format(TEXT_MAIN))
+        col1.addWidget(self._cb_gm_multimedia)
+
+        opts_grid.addLayout(col1)
+
+        col2 = QVBoxLayout()
+        col2.setSpacing(6)
+        self._cb_gm_rust = QCheckBox("Приоритет RustClient: HIGH")
+        self._cb_gm_rust.setChecked(gm_cfg.get("rust_priority", True))
+        self._cb_gm_rust.setStyleSheet("color:{}; background:transparent;".format(TEXT_MAIN))
+        col2.addWidget(self._cb_gm_rust)
+
+        self._cb_gm_kill = QCheckBox("Закрыть фоновые процессы (Chrome, Spotify...)")
+        self._cb_gm_kill.setChecked(gm_cfg.get("kill_processes", True))
+        self._cb_gm_kill.setStyleSheet("color:{}; background:transparent;".format(TEXT_MAIN))
+        col2.addWidget(self._cb_gm_kill)
+
+        self._cb_gm_network = QCheckBox("Сеть: TcpAckFrequency + TCPNoDelay")
+        self._cb_gm_network.setChecked(gm_cfg.get("network", True))
+        self._cb_gm_network.setStyleSheet("color:{}; background:transparent;".format(TEXT_MAIN))
+        col2.addWidget(self._cb_gm_network)
+
+        self._cb_gm_services = QCheckBox("Отключить SysMain, DiagTrack, WSearch")
+        self._cb_gm_services.setChecked(gm_cfg.get("services", True))
+        self._cb_gm_services.setStyleSheet("color:{}; background:transparent;".format(TEXT_MAIN))
+        col2.addWidget(self._cb_gm_services)
+
+        opts_grid.addLayout(col2)
+        gaming_card.lay.addLayout(opts_grid)
+
+        # Кнопка применения игровых оптимизаций
+        btn_gaming_row = QHBoxLayout()
+        self._btn_apply_gaming = self._reg_btn(self.btn("Применить игровые оптимизации", "btn_glow"))
+        self._btn_apply_gaming.setFixedHeight(40)
+        self._btn_apply_gaming.clicked.connect(self._apply_gaming_opts)
+        btn_gaming_row.addWidget(self._btn_apply_gaming)
+        btn_gaming_row.addStretch()
+        gaming_card.lay.addLayout(btn_gaming_row)
+
+        self._content.addWidget(gaming_card)
+
         # Отслеживает, активен ли сейчас игровой режим — используется
         # глобальным хоткеем (MainWindow), чтобы понять, что переключать.
         self._is_active = False
@@ -343,4 +422,49 @@ class GameModePage(BasePage):
         self.log("Время истекло — автоматическое возвращение в обычный режим.", "OK")
         self._auto_return_status.setText("")
         self._do_deactivate()
+
+    # ── Игровые оптимизации ──────────────────────────────────────────── #
+    def _collect_gaming_opts(self):
+        return {
+            "gpu": self._cb_gm_gpu.isChecked(),
+            "power": self._cb_gm_power.isChecked(),
+            "game_mode": self._cb_gm_game_mode.isChecked(),
+            "multimedia": self._cb_gm_multimedia.isChecked(),
+            "rust_priority": self._cb_gm_rust.isChecked(),
+            "kill_processes": self._cb_gm_kill.isChecked(),
+            "network": self._cb_gm_network.isChecked(),
+            "services": self._cb_gm_services.isChecked(),
+        }
+
+    def _save_gaming_opts(self):
+        cfg = load_config()
+        cfg["gaming_optimizations"] = self._collect_gaming_opts()
+        save_config(cfg)
+
+    def _apply_gaming_opts(self):
+        opts = self._collect_gaming_opts()
+        active = sum(1 for v in opts.values() if v)
+        if active == 0:
+            self.log("Выберите хотя бы одну оптимизацию.", "WARN")
+            return
+
+        if QMessageBox.question(
+            self, "Игровые оптимизации",
+            "Будут применены выбранные оптимизации Windows.\n"
+            "Рекомендуется перезагрузка после применения.\n\nПродолжить?",
+            QMessageBox.Yes | QMessageBox.No
+        ) != QMessageBox.Yes:
+            return
+
+        self._save_gaming_opts()
+
+        def _fn(log_func, progress_func):
+            from modules.gaming_optimizer import full_gaming_optimize
+            return full_gaming_optimize(log_func, progress_func, opts)
+
+        self._run_worker(_fn, on_result=self._on_gaming_applied)
+
+    def _on_gaming_applied(self, result):
+        if result:
+            self.log("Игровые оптимизации применены! Рекомендуется перезагрузка.", "OK")
 
