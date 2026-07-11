@@ -487,19 +487,40 @@ class MainWindow(QMainWindow):
         icon = self._make_tray_icon()
 
         self._tray = QSystemTrayIcon(icon, self)
-        self._tray.setToolTip("KUS Pro")
+        self._tray.setToolTip("KUS Pro — двойной клик для открытия")
 
         menu = QMenu()
         act_show = menu.addAction("📂  Показать")
         act_show.triggered.connect(self.show_window)
         menu.addSeparator()
+
+        # Быстрые действия
+        act_zapret = menu.addAction("🛡  Zapret: статус")
+        act_zapret.triggered.connect(self._tray_zapret_status)
+        menu.addSeparator()
+
         act_quit = menu.addAction("✖  Выход")
         act_quit.triggered.connect(self._quit_app)
         self._tray.setContextMenu(menu)
 
-        # !! Правильное подключение activated — через отдельный слот
         self._tray.activated.connect(self._on_tray_activated)
         self._tray.show()
+
+    def _tray_zapret_status(self):
+        """Показать статус zapret в трее."""
+        try:
+            from page_zapret import _is_running, _saved_ver
+            running = _is_running()
+            ver = _saved_ver() or "нет"
+            status = "РАБОТАЕТ" if running else "остановлен"
+            self._tray.showMessage(
+                "Zapret",
+                "Статус: {}\nВерсия: {}".format(status, ver),
+                QSystemTrayIcon.Information if running else QSystemTrayIcon.Warning,
+                3000,
+            )
+        except Exception:
+            pass
 
     def _on_tray_activated(self, reason):
         """Обработчик клика по иконке трея."""

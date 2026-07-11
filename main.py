@@ -319,6 +319,29 @@ def _check_updates_on_startup():
         print("[UPDATE] Ошибка проверки обновлений:", e)
 
 
+def _try_autostart_zapret(preset_name):
+    """Запускает zapret с сохранённым пресетом при старте."""
+    try:
+        from app_paths import ZAPRET_DIR
+        from page_zapret import _save_ver, _get_versions, _is_running, _fn_start, _ver_to_path
+        from worker import Worker
+
+        versions = _get_versions()
+        if not versions or _is_running():
+            return
+
+        ver = versions[0]
+        bat_path = _ver_to_path(ver) / preset_name
+        if bat_path.exists():
+            _save_ver(ver)
+            ver_dir = str(_ver_to_path(ver))
+            worker = Worker(_fn_start, str(bat_path), ver_dir)
+            worker.start()
+            print("[AUTO] Zapret autostart: {} / {}".format(ver, preset_name))
+    except Exception as e:
+        print("[AUTO] Zapret autostart error:", e)
+
+
 def main():
     # Шаг 1: фикс Qt ДО любого импорта PyQt5
     fix_qt_plugins()
@@ -446,27 +469,10 @@ def main():
         win._fade_anim.setEndValue(1.0)
         win._fade_anim.setEasingCurve(QEasingCurve.OutCubic)
         win._fade_anim.start()
-        
+
         # Автозапуск Zapret с сохранённым пресетом
         if autostart_zapret and autostart_zapret_preset:
-            try:
-                from app_paths import ZAPRET_DIR
-                from page_zapret import _save_ver, _get_versions, _is_running, _fn_start
-                from worker import Worker
-                
-                versions = _get_versions()
-                if versions and not _is_running():
-                    ver = versions[0]  # Последняя версия
-                    bat_path = str(ZAPRET_DIR / ver / autostart_zapret_preset)
-                    from pathlib import Path
-                    if Path(bat_path).exists():
-                        _save_ver(ver)
-                        ver_dir = str(ZAPRET_DIR / ver)
-                        worker = Worker(_fn_start, bat_path, ver_dir)
-                        worker.start()
-                        print("[AUTO] Zapret autostart: {} / {}".format(ver, autostart_zapret_preset))
-            except Exception as e:
-                print("[AUTO] Zapret autostart error:", e)
+            _try_autostart_zapret(autostart_zapret_preset)
         
         # Автозапуск Telegram Proxy
         if autostart_tg_proxy:
@@ -485,23 +491,7 @@ def main():
         win._hide_to_tray()
         # Автозапуск модулей даже в свёрнутом режиме
         if autostart_zapret and autostart_zapret_preset:
-            try:
-                from app_paths import ZAPRET_DIR
-                from page_zapret import _save_ver, _get_versions, _is_running, _fn_start
-                from worker import Worker
-                
-                versions = _get_versions()
-                if versions and not _is_running():
-                    ver = versions[0]
-                    bat_path = str(ZAPRET_DIR / ver / autostart_zapret_preset)
-                    from pathlib import Path
-                    if Path(bat_path).exists():
-                        _save_ver(ver)
-                        ver_dir = str(ZAPRET_DIR / ver)
-                        worker = Worker(_fn_start, bat_path, ver_dir)
-                        worker.start()
-            except Exception:
-                pass
+            _try_autostart_zapret(autostart_zapret_preset)
         if autostart_tg_proxy:
             try:
                 from page_tg_proxy import _find_exe, _is_running as tg_running
