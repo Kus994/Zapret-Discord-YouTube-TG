@@ -489,38 +489,146 @@ class MainWindow(QMainWindow):
         self._tray = QSystemTrayIcon(icon, self)
         self._tray.setToolTip("KUS Pro — двойной клик для открытия")
 
-        menu = QMenu()
-        act_show = menu.addAction("📂  Показать")
-        act_show.triggered.connect(self.show_window)
-        menu.addSeparator()
+        self._tray_menu = QMenu()
+        self._rebuild_tray_menu()
 
-        # Быстрые действия
-        act_zapret = menu.addAction("🛡  Zapret: статус")
-        act_zapret.triggered.connect(self._tray_zapret_status)
-        menu.addSeparator()
-
-        act_quit = menu.addAction("✖  Выход")
-        act_quit.triggered.connect(self._quit_app)
-        self._tray.setContextMenu(menu)
-
+        self._tray.setContextMenu(self._tray_menu)
         self._tray.activated.connect(self._on_tray_activated)
         self._tray.show()
 
-    def _tray_zapret_status(self):
-        """Показать статус zapret в трее."""
+        # Таймер обновления меню трея (каждые 5 сек)
+        self._tray_refresh_timer = QTimer(self)
+        self._tray_refresh_timer.timeout.connect(self._rebuild_tray_menu)
+        self._tray_refresh_timer.start(5000)
+
+    def _rebuild_tray_menu(self):
+        """Пересоздаёт контекстное меню трея с актуальным списком стратегий."""
+        self._tray_menu.clear()
+
+        act_show = self._tray_menu.addAction("📂  Показать")
+        act_show.triggered.connect(self.show_window)
+        self._tray_menu.addSeparator()
+
+        # ── Подменю стратегий Zapret ──
+        zapret_menu = self._tray_menu.addMenu("🛡  Zapret")
+        self._build_tray_zapret_menu(zapret_menu)
+
+        self._tray_menu.addSeparator()
+
+        # Остановить Zapret
+        from page_zapret import _is_running
+        if _is_running():
+            act_stop = self._tray_menu.addAction("⏹  Остановить Zapret")
+            act_stop.triggered.connect(self._tray_stop_zapret)
+            self._tray_menu.addSeparator()
+
+        act_quit = self._tray_menu.addAction("✖  Выход")
+        act_quit.triggered.connect(self._quit_app)
+
+    def _build_tray_zapret_menu(self, menu):
+        """Заполняет подменю Zapret стратегиями из zapret/."""
         try:
-            from page_zapret import _is_running, _saved_ver
+            from app_paths import ZAPRET_DIR
+            from page_zapret import _get_versions, _saved_ver, _ver_to_path, _get_bats, _is_running
+
+            versions = _get_versions()
+            if not versions:
+                menu.addAction("— нет стратегий —").setEnabled(False)
+                return
+
+            current_ver = _saved_ver() or versions[0]
+            current_preset = ""
+            try:
+                from config_manager import get_value
+                current_preset = str(get_value("autostart_zapret_preset", ""))
+            except Exception:
+                pass
+
             running = _is_running()
-            ver = _saved_ver() or "нет"
-            status = "РАБОТАЕТ" if running else "остановлен"
+
+            for ver in versions:
+                ver_path = _ver_to_path(ver)
+                bats = _get_bats(ver_path)
+                if not bats:
+                    continue
+
+                ver_menu = menu.addMenu("📁 {}".format(ver))
+
+                for bat in bats:
+                    label = bat.replace(".bat", "")
+                    # Пометка текущей стратегии
+                    is_current = (ver == current_ver and bat == current_preset)
+                    prefix = "● " if is_current else "  "
+                    act = ver_menu.addAction("{}{}".format(prefix, label))
+
+                    if is_current and running:
+                        act.setEnabled(False)
+
+                    # Запуск через lambda с захватом параметров
+                    act.triggered.connect(
+                        lambda checked=False, v=ver, b=bat: self._tray_switch_strategy(v, b)
+                    )
+        except Exception as e:
+            menu.addAction("Ошибка: {}".format(str(e)[:30])).setEnabled(False)
+
+    def _tray_switch_strategy(self, ver, bat_name):
+        """Переключает стратегию zapret из трея."""
+        try:
+            from page_zapret import _is_running, _fn_start, _fn_stop, _ver_to_path, _save_ver
+            from worker import Worker
+            from pathlib import Path
+
+            bat_path = _ver_to_path(ver) / bat_name
+            if not bat_path.exists():
+                self._tray.showMessage("Ошибка", "Файл не найден: {}".format(bat_name),
+                                       QSystemTrayIcon.Warning, 2000)
+                return
+
+            # Останавливаем текущую
+            if _is_running():
+                _fn_stop(lambda *a: None, lambda *a: None)
+
+            # Запускаем новую
+            _save_ver(ver)
+            ver_dir = str(_ver_to_path(ver))
+            self._zapret_worker = Worker(_fn_start, str(bat_path), ver_dir)
+            self._zapret_worker.start()
+
+            # Уведомление
             self._tray.showMessage(
                 "Zapret",
-                "Статус: {}\nВерсия: {}".format(status, ver),
-                QSystemTrayIcon.Information if running else QSystemTrayIcon.Warning,
-                3000,
+                "Стратегия: {}\nВерсия: {}".format(bat_name.replace(".bat", ""), ver),
+                QSystemTrayIcon.Information, 3000
             )
-        except Exception:
-            pass
+
+            # Обновляем меню
+            self._rebuild_tray_menu()
+
+            # Обновляем страницу zapret если открыта
+            try:
+                from main_window import MainWindow
+                for page in self._pg_cache.values():
+                    if hasattr(page, '_reload'):
+                        page._reload()
+                        break
+            except Exception:
+                pass
+
+        except Exception as e:
+            self._tray.showMessage("Ошибка", str(e)[:60],
+                                   QSystemTrayIcon.Warning, 2000)
+
+    def _tray_stop_zapret(self):
+        """Останавливает zapret из трея."""
+        try:
+            from page_zapret import _fn_stop
+            _fn_stop(lambda *a: None, lambda *a: None)
+            self._tray.showMessage("Zapret", "Остановлен",
+                                   QSystemTrayIcon.Information, 2000)
+            self._rebuild_tray_menu()
+        except Exception as e:
+            self._tray.showMessage("Ошибка", str(e)[:60],
+                                   QSystemTrayIcon.Warning, 2000)
 
     def _on_tray_activated(self, reason):
         """Обработчик клика по иконке трея."""
