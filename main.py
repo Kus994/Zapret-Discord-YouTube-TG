@@ -338,6 +338,21 @@ def _try_autostart_zapret(preset_name):
             worker = Worker(_fn_start, str(bat_path), ver_dir)
             worker.start()
             print("[AUTO] Zapret autostart: {} / {}".format(ver, preset_name))
+
+            # Уведомление в трей
+            try:
+                from PyQt5.QtWidgets import QSystemTrayIcon
+                from PyQt5.QtCore import QTimer
+                def _notify():
+                    tray = QSystemTrayIcon()
+                    tray.showMessage(
+                        "Zapret автозапуск",
+                        "Стратегия: {}\nВерсия: {}".format(Path(preset_name).stem, ver),
+                        QSystemTrayIcon.Information, 3000
+                    )
+                QTimer.singleShot(5000, _notify)
+            except Exception:
+                pass
     except Exception as e:
         print("[AUTO] Zapret autostart error:", e)
 

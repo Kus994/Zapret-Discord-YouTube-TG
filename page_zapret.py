@@ -1339,6 +1339,13 @@ class ZapretPage(BasePage):
             pass
         
         self.log("Быстрый запуск: {} / general.bat".format(ver), "INFO")
+
+        # Уведомление в трей
+        self._show_tray_notification(
+            "Zapret запущен",
+            "Стратегия: general\nВерсия: {}".format(ver)
+        )
+
         self._start_w = Worker(_fn_start, bat_path, ver_dir)
         self._start_w.line_out.connect(self.log)
         self._start_w.progress.connect(self.set_progress)
@@ -1465,6 +1472,12 @@ class ZapretPage(BasePage):
         
         self.log("Запуск: {}  /  {}".format(ver, bat_name), "INFO")
 
+        # Уведомление в трей
+        self._show_tray_notification(
+            "Zapret запущен",
+            "Стратегия: {}\nВерсия: {}".format(Path(bat_name).stem, ver)
+        )
+
         self._start_w = Worker(_fn_start, bat_path, ver_dir)
         self._start_w.line_out.connect(self.log)
         self._start_w.progress.connect(self.set_progress)
@@ -1500,6 +1513,15 @@ class ZapretPage(BasePage):
     def hideEvent(self, e):
         self._poll.stop()
         super().hideEvent(e)
+
+    def _show_tray_notification(self, title, message):
+        """Показать уведомление в системном трее."""
+        try:
+            from PyQt5.QtWidgets import QSystemTrayIcon
+            tray = QSystemTrayIcon(self)
+            tray.showMessage(title, message, QSystemTrayIcon.Information, 3000)
+        except Exception:
+            pass
 
 
 # ── Auto-Tuning функция ────────────────────────────────────────────── #
