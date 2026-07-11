@@ -150,8 +150,17 @@ def _is_running():
 def _get_versions():
     if not ZAPRET_DIR.exists():
         return []
-    return sorted(p.name for p in ZAPRET_DIR.iterdir()
-                  if p.is_dir() and (p / "service.bat").exists())
+    versions = []
+    # Корневая папка zapret/ — если в ней есть service.bat и bat-файлы
+    if (ZAPRET_DIR / "service.bat").exists():
+        root_bats = list(ZAPRET_DIR.glob("*.bat"))
+        if root_bats:
+            versions.append("root")
+    # Подпапки с service.bat
+    for p in ZAPRET_DIR.iterdir():
+        if p.is_dir() and (p / "service.bat").exists():
+            versions.append(p.name)
+    return sorted(versions)
 
 
 def _get_bats(ver_dir: Path):
@@ -163,11 +172,18 @@ def _get_bats(ver_dir: Path):
     return bats
 
 
+def _ver_to_path(ver_name):
+    """Конвертирует имя версии в путь. 'root' = ZAPRET_DIR, остальное = подпапка."""
+    if ver_name == "root":
+        return ZAPRET_DIR
+    return ZAPRET_DIR / ver_name
+
+
 def _saved_ver():
     vf = ZAPRET_DIR / "current_version.txt"
     if vf.exists():
         n = vf.read_text(encoding="utf-8").strip()
-        if (ZAPRET_DIR / n).exists():
+        if n == "root" or (ZAPRET_DIR / n).exists():
             return n
     v = _get_versions()
     return v[0] if v else None
@@ -1147,7 +1163,7 @@ class ZapretPage(BasePage):
 
     def _on_ver_change(self, name):
         self._bat_list.clear()
-        bats = _get_bats(ZAPRET_DIR / name)
+        bats = _get_bats(_ver_to_path(name))
         if bats:
             for bat in bats:
                 item = QListWidgetItem(bat)
@@ -1232,8 +1248,8 @@ class ZapretPage(BasePage):
         if _is_running():
             self.log("Zapret уже запущен.", "WARN")
             return
-        bat_path = str(ZAPRET_DIR / ver / "general.bat")
-        ver_dir = str(ZAPRET_DIR / ver)
+        bat_path = str(_ver_to_path(ver) / "general.bat")
+        ver_dir = str(_ver_to_path(ver))
         if not Path(bat_path).exists():
             self.log("general.bat не найден в {}".format(ver_dir), "ERR")
             return
@@ -1357,8 +1373,8 @@ class ZapretPage(BasePage):
         if _is_running():
             self.log("Zapret уже запущен.", "WARN"); return
 
-        bat_path = str(ZAPRET_DIR / ver / bat_name)
-        ver_dir  = str(ZAPRET_DIR / ver)
+        bat_path = str(_ver_to_path(ver) / bat_name)
+        ver_dir  = str(_ver_to_path(ver))
         _save_ver(ver)
         
         # Сохраняем выбранный пресет для автозапуска
