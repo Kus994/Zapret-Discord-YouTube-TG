@@ -277,6 +277,48 @@ def check_windows_version():
     return True
 
 
+def _check_updates_on_startup():
+    """Фоновая проверка обновлений KUS Pro при запуске."""
+    try:
+        from auto_updater import check_kus_pro_update
+        import webbrowser
+        
+        has_update, current, latest, url = check_kus_pro_update()
+        if has_update and latest:
+            print("[UPDATE] Доступна версия {} (текущая: {})".format(latest, current))
+            # Показываем уведомление в трее
+            try:
+                from PyQt5.QtWidgets import QSystemTrayIcon, QMessageBox
+                from PyQt5.QtGui import QIcon
+                
+                # Используем QTimer чтобы показать уведомление после инициализации окна
+                def _show_update_notification():
+                    try:
+                        reply = QMessageBox.information(
+                            None,
+                            "Обновление KUS Pro",
+                            "Доступна новая версия {}!\n\n"
+                            "Текущая версия: {}\n\n"
+                            "Открыть страницу скачивания?".format(latest, current),
+                            QMessageBox.Yes | QMessageBox.No,
+                            QMessageBox.Yes
+                        )
+                        if reply == QMessageBox.Yes:
+                            webbrowser.open(url)
+                    except Exception:
+                        pass
+                
+                # Показываем через 3 секунды после запуска
+                from PyQt5.QtCore import QTimer
+                QTimer.singleShot(3000, _show_update_notification)
+            except Exception:
+                pass
+        else:
+            print("[UPDATE] KUS Pro актуален (v{})".format(current))
+    except Exception as e:
+        print("[UPDATE] Ошибка проверки обновлений:", e)
+
+
 def main():
     # Шаг 1: фикс Qt ДО любого импорта PyQt5
     fix_qt_plugins()
@@ -373,6 +415,9 @@ def main():
     app.processEvents()
 
     _install_global_excepthook()
+
+    # Шаг 6: проверка обновлений при запуске (фоново)
+    QTimer.singleShot(1000, _check_updates_on_startup)
 
     from main_window import MainWindow
     win = MainWindow()
