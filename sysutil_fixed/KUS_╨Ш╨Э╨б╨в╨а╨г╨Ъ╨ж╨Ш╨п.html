@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KUS v2 - Полная инструкция</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0B1220 0%, #1a2744 100%);
+            color: #E7EEF7;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #0F1823;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        header {
+            background: linear-gradient(135deg, #5AA9E6 0%, #3D8FCF 100%);
+            padding: 40px 30px;
+            text-align: center;
+            color: white;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        h2 {
+            color: #5AA9E6;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #5AA9E6;
+            font-size: 1.8em;
+        }
+
+        h3 {
+            color: #7FC4F5;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        p, li {
+            margin-bottom: 15px;
+            color: #E7EEF7;
+            line-height: 1.8;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .step {
+            background: #060A12;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid #5AA9E6;
+            border-radius: 5px;
+        }
+
+        .step-number {
+            background: #5AA9E6;
+            color: white;
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .success {
+            color: #4CC9A4;
+            font-weight: bold;
+        }
+
+        .warning {
+            color: #F4A261;
+            font-weight: bold;
+        }
+
+        .error {
+            color: #E15554;
+            font-weight: bold;
+        }
+
+        .info {
+            color: #5AA9E6;
+            font-weight: bold;
+        }
+
+        code {
+            background: #060A12;
+            color: #A0D8FF;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Consolas', monospace;
+            font-size: 0.95em;
+        }
+
+        .code-block {
+            background: #060A12;
+            color: #A0D8FF;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9em;
+            border-left: 4px solid #4CC9A4;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: #060A12;
+        }
+
+        th {
+            background: #5AA9E6;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #1a2744;
+            color: #E7EEF7;
+        }
+
+        tr:hover {
+            background: #1a2744;
+        }
+
+        .feature-box {
+            background: #060A12;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 5px;
+            border: 1px solid #5AA9E6;
+        }
+
+        .feature-box h4 {
+            color: #5AA9E6;
+            margin-bottom: 10px;
+        }
+
+        .button {
+            display: inline-block;
+            background: #5AA9E6;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin: 10px 5px 10px 0;
+            cursor: pointer;
+            border: none;
+            font-size: 0.95em;
+            transition: background 0.3s ease;
+        }
+
+        .button:hover {
+            background: #3D8FCF;
+        }
+
+        .toc {
+            background: #060A12;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .toc h3 {
+            margin-top: 0;
+        }
+
+        .toc a {
+            color: #5AA9E6;
+            text-decoration: none;
+            display: block;
+            padding: 5px 0;
+            margin-left: 15px;
+        }
+
+        .toc a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background: #060A12;
+            padding: 30px;
+            text-align: center;
+            color: #8FA3BD;
+            border-top: 1px solid #1a2744;
+            margin-top: 40px;
+        }
+
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                border-radius: 0;
+            }
+
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            h2 {
+                font-size: 1.4em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 KUS v2</h1>
+            <p>Полная инструкция по запуску и использованию</p>
+        </header>
+
+        <div class="content">
+            <!-- СОДЕРЖАНИЕ -->
+            <div class="toc">
+                <h3>📑 Содержание</h3>
+                <a href="#about">ℹ️ Что это такое?</a>
+                <a href="#install">💻 Установка</a>
+                <a href="#run">🎯 Запуск приложения</a>
+                <a href="#features">✨ Функции</a>
+                <a href="#shortcuts">⌨️ Горячие клавиши</a>
+                <a href="#troubleshooting">🔧 Решение проблем</a>
+                <a href="#faq">❓ Вопросы и ответы</a>
+            </div>
+
+            <!-- РАЗДЕЛ 1 -->
+            <h2 id="about"><span class="emoji">ℹ️</span> Что это такое и зачем?</h2>
+            
+            <p><strong>KUS v2</strong> - это современная утилита для системного администратора Windows.</p>
+
+            <p>Она позволяет:</p>
+            <ul>
+                <li><span class="success">✓</span> Очищать системный мусор (временные файлы, кэш)</li>
+                <li><span class="success">✓</span> Мониторить ресурсы (CPU, RAM, диски)</li>
+                <li><span class="success">✓</span> Управлять сетью (netstat, DNS, TCP/IP)</li>
+                <li><span class="success">✓</span> Управлять процессами (список, завершение)</li>
+                <li><span class="success">✓</span> Обновлять Windows и драйверы</li>
+                <li><span class="success">✓</span> И многое другое...</li>
+            </ul>
+
+            <div class="feature-box">
+                <h4>✨ Главное улучшение в V2:</h4>
+                <p>Приложение <strong>больше НЕ ЗАВИСАЕТ</strong> при выполнении операций!<br>
+                Весь интерфейс остаётся отзывчивым и красивым. 🎉</p>
+            </div>
+
+            <!-- РАЗДЕЛ 2 -->
+            <h2 id="install"><span class="emoji">💻</span> Установка</h2>
+
+            <h3>Шаг 1: Python</h3>
+            <div class="step">
+                <span class="step-number">1</span>
+                <strong>Установите Python 3.10+</strong>
+                <ol>
+                    <li>Перейдите на <a href="https://www.python.org/downloads/" style="color: #5AA9E6;">https://www.python.org/downloads/</a></li>
+                    <li>Скачайте последнюю версию Python</li>
+                    <li>Запустите установщик</li>
+                    <li><span class="warning">⚠ ВАЖНО:</span> Поставьте галочку "Add Python to PATH"</li>
+                    <li>Нажмите "Install Now"</li>
+                </ol>
+                <p style="margin-top: 15px;">Проверка: Откройте PowerShell и напишите:</p>
+                <div class="code-block">python --version</div>
+                <p>Должно вывести: Python 3.10.x или выше</p>
+            </div>
+
+            <h3>Шаг 2: Скачайте файлы</h3>
+            <div class="step">
+                <span class="step-number">2</span>
+                <p>Скачайте архив <code>sysutil.zip</code> и разархивируйте его куда-нибудь.</p>
+                <p>Примеры путей:</p>
+                <ul>
+                    <li><code>C:\Users\YourName\Desktop\sysutil</code></li>
+                    <li><code>C:\Users\YourName\Documents\sysutil</code></li>
+                </ul>
+            </div>
+
+            <h3>Шаг 3: Установите зависимости</h3>
+            <div class="step">
+                <span class="step-number">3</span>
+                <ol>
+                    <li>Откройте PowerShell или CMD</li>
+                    <li>Перейдите в папку sysutil:
+                        <div class="code-block">cd путь\к\папке\sysutil</div>
+                    </li>
+                    <li>Выполните команду:
+                        <div class="code-block">pip install -r requirements.txt</div>
+                    </li>
+                    <li>Дождитесь завершения (1-3 минуты)</li>
+                </ol>
+            </div>
+
+            <!-- РАЗДЕЛ 3 -->
+            <h2 id="run"><span class="emoji">🎯</span> Запуск приложения</h2>
+
+            <h3>Способ 1: С правами администратора (правильный) ⭐</h3>
+            <div class="step">
+                <ol>
+                    <li>Откройте папку где лежит <code>main.py</code></li>
+                    <li>Удерживайте Shift + кликните правую кнопку на пустом месте</li>
+                    <li>Выберите "Открыть PowerShell здесь"</li>
+                    <li>Напишите:
+                        <div class="code-block">python main.py</div>
+                    </li>
+                    <li>Windows спросит о правах - нажмите <span class="success">"Да"</span></li>
+                    <li>Приложение откроется за 4-5 секунд</li>
+                </ol>
+            </div>
+
+            <h3>Способ 2: Без администратора (быстро)</h3>
+            <div class="step">
+                <ol>
+                    <li>Откройте CMD или PowerShell</li>
+                    <li>Перейдите в папку:
+                        <div class="code-block">cd путь\к\sysutil</div>
+                    </li>
+                    <li>Запустите:
+                        <div class="code-block">python main.py</div>
+                    </li>
+                </ol>
+                <p><span class="warning">⚠ Внимание:</span> Некоторые функции не будут работать без администратора!</p>
+            </div>
+
+            <h3>Способ 3: Создайте ярлык (удобно) 🎁</h3>
+            <div class="step">
+                <ol>
+                    <li>В папке sysutil кликните правую кнопку на <code>main.py</code></li>
+                    <li>"Отправить" → "Рабочий стол (создать ярлык)"</li>
+                    <li>Теперь на рабочем столе есть ярлык!</li>
+                </ol>
+            </div>
+
+            <!-- РАЗДЕЛ 4 -->
+            <h2 id="features"><span class="emoji">✨</span> Функции и как их использовать</h2>
+
+            <h3>🧹 ОЧИСТКА СИСТЕМЫ</h3>
+            <div class="feature-box">
+                <h4>Что делает:</h4>
+                <p>Удаляет временные файлы, кэш и мусор из системы.</p>
+                
+                <h4>Как использовать:</h4>
+                <ol>
+                    <li>Нажмите кнопку "🧹 Очистка системы" слева</li>
+                    <li>Поставьте галочки рядом с операциями</li>
+                    <li>Нажмите "Начать очистку"</li>
+                    <li>Смотрите волновой прогресс-бар</li>
+                    <li>Смотрите логирование с цветами:
+                        <ul>
+                            <li><span class="success">✓ Зелёный</span> = успешно</li>
+                            <li><span class="warning">⚠ Оранжевый</span> = предупреждение</li>
+                            <li><span class="error">✗ Красный</span> = ошибка</li>
+                        </ul>
+                    </li>
+                    <li>Увидите красивый отчет о результатах</li>
+                </ol>
+
+                <h4>Результаты:</h4>
+                <ul>
+                    <li>Обычно освобождается: <strong>1-5 ГБ</strong></li>
+                    <li>Время выполнения: <strong>2-10 минут</strong></li>
+                    <li>UI остаётся отзывчивым: <span class="success">✓</span></li>
+                </ul>
+            </div>
+
+            <h3>🌐 СЕТЕВАЯ ДИАГНОСТИКА</h3>
+            <div class="feature-box">
+                <h4>Что делает:</h4>
+                <p>Показывает все активные сетевые соединения и позволяет сбросить DNS/TCP/IP.</p>
+                
+                <h4>Кнопки:</h4>
+                <ul>
+                    <li><strong>Показать соединения</strong> - таблица всех активных соединений</li>
+                    <li><strong>Сбросить DNS</strong> - очищает кэш доменов</li>
+                    <li><strong>Сбросить TCP/IP</strong> - перезагружает сетевой стек</li>
+                </ul>
+
+                <h4>Когда использовать:</h4>
+                <ul>
+                    <li>Интернет медленный → Сбросить DNS кэш</li>
+                    <li>Интернет не работает → Сбросить TCP/IP</li>
+                    <li>Проверить программы в интернете → Показать соединения</li>
+                </ul>
+            </div>
+
+            <h3>⚙️ МЕНЕДЖЕР ПРОЦЕССОВ</h3>
+            <div class="feature-box">
+                <h4>Что делает:</h4>
+                <p>Показывает список всех запущенных процессов и позволяет их завершать.</p>
+                
+                <h4>Как использовать:</h4>
+                <ol>
+                    <li>Нажмите "⚙️ Менеджер процессов"</li>
+                    <li>Увидите таблицу со всеми процессами</li>
+                    <li>Выберите процесс</li>
+                    <li>Нажмите "Завершить процесс"</li>
+                </ol>
+
+                <p><span class="error">⚠ ОСТОРОЖНО!</span> Не завершайте системные процессы:
+                <ul>
+                    <li>svchost.exe</li>
+                    <li>kernel_task</li>
+                    <li>explorer.exe</li>
+                </ul>
+                </p>
+            </div>
+
+            <h3>🔄 ОБНОВЛЕНИЯ WINDOWS</h3>
+            <div class="feature-box">
+                <h4>Что делает:</h4>
+                <p>Проверяет и устанавливает обновления Windows и драйверов.</p>
+                
+                <h4>Как использовать:</h4>
+                <ol>
+                    <li>Нажмите "🔄 Обновления Windows"</li>
+                    <li>Нажмите "Проверить обновления"</li>
+                    <li>Выберите какие установить</li>
+                    <li>Нажмите "Установить"</li>
+                    <li>Компьютер может перезагрузиться</li>
+                </ol>
+
+                <p><span class="info">💡 Совет:</span> Делайте это в конце дня!</p>
+            </div>
+
+            <h3>📊 МОНИТОРИНГ РЕСУРСОВ</h3>
+            <div class="feature-box">
+                <h4>Что показывает:</h4>
+                <ul>
+                    <li>Использование CPU (%)</li>
+                    <li>Использование памяти (%)</li>
+                    <li>Использование дисков (%)</li>
+                    <li>Температура процессора</li>
+                </ul>
+                
+                <h4>Цветная кодировка:</h4>
+                <ul>
+                    <li><span class="success">Зелёная</span> линия = нормально</li>
+                    <li><span class="warning">Оранжевая</span> = высоко</li>
+                    <li><span class="error">Красная</span> = критично</li>
+                </ul>
+
+                <h4>Нормальные значения:</h4>
+                <ul>
+                    <li>CPU 30-50% - нормально</li>
+                    <li>CPU 80%+ - что-то грузит</li>
+                    <li>RAM 50-70% - нормально</li>
+                    <li>RAM 90%+ - нужно закрыть программы</li>
+                </ul>
+            </div>
+
+            <!-- РАЗДЕЛ 5 -->
+            <h2 id="shortcuts"><span class="emoji">⌨️</span> Горячие клавиши</h2>
+            
+            <table>
+                <tr>
+                    <th>Клавиша</th>
+                    <th>Функция</th>
+                </tr>
+                <tr>
+                    <td>F1</td>
+                    <td>Справка (в разработке)</td>
+                </tr>
+                <tr>
+                    <td>F5</td>
+                    <td>Обновить текущую вкладку</td>
+                </tr>
+                <tr>
+                    <td>Ctrl+Q</td>
+                    <td>Выход из приложения</td>
+                </tr>
+                <tr>
+                    <td>Alt+Tab</td>
+                    <td>Переключение между программами</td>
+                </tr>
+                <tr>
+                    <td>Ctrl+Shift+Esc</td>
+                    <td>Диспетчер задач Windows</td>
+                </tr>
+            </table>
+
+            <!-- РАЗДЕЛ 6 -->
+            <h2 id="troubleshooting"><span class="emoji">🔧</span> Решение проблем</h2>
+
+            <h3>❌ ModuleNotFoundError: No module named 'customtkinter'</h3>
+            <div class="step">
+                <p><strong>Решение:</strong></p>
+                <div class="code-block">pip install customtkinter</div>
+            </div>
+
+            <h3>⏱️ Приложение запускается долго (5+ сек)</h3>
+            <div class="step">
+                <p><span class="info">ℹ ЭТО НОРМАЛЬНО!</span> Python требует времени для запуска.</p>
+                <p>Используйте ярлык на рабочем столе для удобства.</p>
+            </div>
+
+            <h3>🔒 Access is denied (отказано в доступе)</h3>
+            <div class="step">
+                <p><strong>Решение:</strong></p>
+                <ol>
+                    <li>Откройте PowerShell "Запуск от администратора"</li>
+                    <li>Перейдите в папку:
+                        <div class="code-block">cd path\to\sysutil</div>
+                    </li>
+                    <li>Запустите:
+                        <div class="code-block">python main.py</div>
+                    </li>
+                </ol>
+            </div>
+
+            <h3>⚠️ Windows предупреждение об издателе</h3>
+            <div class="step">
+                <p><span class="info">ℹ ЭТО НОРМАЛЬНО!</span> Нажмите "Всё равно запустить"</p>
+            </div>
+
+            <!-- РАЗДЕЛ 7 -->
+            <h2 id="faq"><span class="emoji">❓</span> Вопросы и ответы</h2>
+
+            <table>
+                <tr>
+                    <th>Вопрос</th>
+                    <th>Ответ</th>
+                </tr>
+                <tr>
+                    <td>Можно ли удалить приложение?</td>
+                    <td>Да, просто удалите папку sysutil</td>
+                </tr>
+                <tr>
+                    <td>Работает ли на Windows 7?</td>
+                    <td>Нет, нужна Windows 10 или 11</td>
+                </tr>
+                <tr>
+                    <td>Работает ли на Mac/Linux?</td>
+                    <td>Нет, только для Windows</td>
+                </tr>
+                <tr>
+                    <td>Сколько места занимает?</td>
+                    <td>~150 МБ после установки</td>
+                </tr>
+                <tr>
+                    <td>Нужен ли интернет?</td>
+                    <td>Для основных функций нет</td>
+                </tr>
+                <tr>
+                    <td>Насколько это безопасно?</td>
+                    <td>Полностью безопасно! Весь код открыт</td>
+                </tr>
+            </table>
+
+        </div>
+
+        <footer>
+            <p><strong>KUS v2.0.0</strong> | Разработано с ❤️ для Windows</p>
+            <p>Документация последний раз обновлена: Июнь 2026</p>
+            <p style="margin-top: 20px; color: #5AA9E6;">Спасибо что используете KUS! 🚀</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -21,7 +21,7 @@ BORDER = "rgba(0,255,136,0.1)"
 BORDER_LIGHT = "rgba(0,255,136,0.05)"
 BORDER_SUBTLE = "rgba(255,255,255,0.03)"
 
-VERSION = "1.0.0"
+VERSION = "3.1.0"
 
 TABLE_QSS = """
 QTableWidget {

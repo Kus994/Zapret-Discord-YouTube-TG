@@ -1,0 +1,290 @@
+{
+  "consent": true,
+  "app_categories": {},
+  "days": {
+    "2026-07-02": {
+      "auto": {
+        "python.exe": {
+          "seconds": 315,
+          "last_title": "KUS Pro — Системная утилита"
+        },
+        "browser.exe": {
+          "seconds": 45,
+          "last_title": "(53) Лабиринт \"Кулазара\" попытка номер 2 - YouTube"
+        },
+        "WindowsTerminal.exe": {
+          "seconds": 5,
+          "last_title": "KUS Pro"
+        },
+        "explorer.exe": {
+          "seconds": 10,
+          "last_title": "Окно переполнения области уведомлений."
+        }
+      },
+      "manual": []
+    },
+    "2026-07-03": {
+      "auto": {
+        "python.exe": {
+          "seconds": 915,
+          "last_title": "KUS Pro — Системная утилита"
+        },
+        "cmd.exe": {
+          "seconds": 30,
+          "last_title": "Администратор:  ZAPRET SERVICE MANAGER v1.9.9c"
+        },
+        "explorer.exe": {
+          "seconds": 140,
+          "last_title": "Переключение задач"
+        },
+        "wezterm-gui.exe": {
+          "seconds": 1300,
+          "last_title": "[2/3] MC | Переход в папку KusXXX"
+        },
+        "browser.exe": {
+          "seconds": 335,
+          "last_title": "(55) Азбука Уральских пельменей - З, И, Й | Уральские пельмени - YouTube — Яндекс Браузер"
+        },
+        "SnippingTool.exe": {
+          "seconds": 30,
+          "last_title": "Наложение Ножниц"
+        },
+        "ShellExperienceHost.exe": {
+          "seconds": 5,
+          "last_title": "Список переходов для Python 3.14 (64-bit)"
+        },
+        "Notepad.exe": {
+          "seconds": 5,
+          "last_title": "zapret_hosts.txt — Блокнот"
+        },
+        "WindowsTerminal.exe": {
+          "seconds": 10,
+          "last_title": " dist\\KUS_Pro\\KUS_Pro.exe"
+        },
+        "Taskmgr.exe": {
+          "seconds": 45,
+          "last_title": "Диспетчер задач"
+        },
+        "KUS_Pro.exe": {
+          "seconds": 5,
+          "last_title": "KUS Pro"
+        }
+      },
+      "manual": []
+    },
+    "2026-07-05": {
+      "auto": {
+        "python.exe": {
+          "seconds": 440,
+          "last_title": "KUS Pro — Системная утилита"
+        },
+        "wezterm-gui.exe": {
+          "seconds": 625,
+          "last_title": "[2/2] "
+        },
+        "browser.exe": {
+          "seconds": 4870,
+          "last_title": "(62) Лузера травили всей школой — но лишь ОН знал, как выжить при КОНЦЕ СВЕТА | Манхва Рекап - YouTube — Яндекс Браузер"
+        },
+        "Telegram.exe": {
+          "seconds": 285,
+          "last_title": "‎Golden Eye – (8313)"
+        },
+        "SnippingTool.exe": {
+          "seconds": 10,
+          "last_title": "Наложение Ножниц"
+        },
+        "explorer.exe": {
+          "seconds": 55,
+          "last_title": "Переключение задач"
+        },
+        "WindowsTerminal.exe": {
+          "seconds": 5,
+          "last_title": "KUS Pro"
+        },
+        "cmd.exe": {
+          "seconds": 5,
+          "last_title": "Administrator:  KUS Pro"
+        },
+        "dungeoncrusher.exe": {
+          "seconds": 270,
+          "last_title": "Dungeon Crusher"
+        },
+        "SearchHost.exe": {
+          "seconds": 15,
+          "last_title": "Поиск"
+        },
+        "steamwebhelper.exe": {
+          "seconds": 5,
+          "last_title": "Запуск..."
+        }
+      },
+      "manual": []
+    },
+    "2026-07-06": {
+      "auto": {
+        "cmd.exe": {
+          "seconds": 30,
+          "last_title": "Administrator:  KUS Pro"
+        },
+        "browser.exe": {
+          "seconds": 40715,
+          "last_title": "Редактор скриншотов - 2026-07-06_15-39-52.png"
+        },
+        "wezterm-gui.exe": {
+          "seconds": 135,
+          "last_title": "MC | Найти KusXXX на рабочем столе"
+        },
+        "python.exe": {
+          "seconds": 295,
+          "last_title": "KUS Pro — Системная утилита"
+        },
+        "explorer.exe": {
+          "seconds": 10,
+          "last_title": "Переключение задач"
+        }
+      },
+      "manual": []
+    },
+    "2026-07-07": {
+      "auto": {
+        "python.exe": {
+          "seconds": 185,
+          "last_title": "KUS Pro — Системная утилита"
+        },
+        "browser.exe": {
+          "seconds": 25,
+          "last_title": "Редактор скриншотов"
+        },
+        "explorer.exe": {
+          "seconds": 45,
+          "last_title": "(без заголовка)"
+        },
+        "wezterm-gui.exe": {
+          "seconds": 140,
+          "last_title": "MC | Найти KusXXX на рабочем столе"
+        }
+      },
+      "manual": []
+    },
+    "2026-07-09": {
+      "auto": {
+        "wezterm-gui.exe": {
+          "seconds": 285,
+          "last_title": "MC | Переход к C:\\Users\\Кусь\\Desktop\\KusXXX"
+        },
+        "python.exe": {
+          "seconds": 675,
+          "last_title": "KUS Pro v3.2.0 — Системная утилита"
+        },
+        "browser.exe": {
+          "seconds": 325,
+          "last_title": "(69) У САШИ ГАЛЛЮЦИНАЦИИ | Универ,(2008) #сериал - YouTube — Яндекс Браузер"
+        },
+        "SnippingTool.exe": {
+          "seconds": 10,
+          "last_title": "Наложение Ножниц"
+        },
+        "explorer.exe": {
+          "seconds": 60,
+          "last_title": "(без заголовка)"
+        },
+        "nekobox.exe": {
+          "seconds": 5,
+          "last_title": "[Системный прокси] Iblis 5.10.23 2026-03-12 [VLESS]🇸🇪 🎮 ⚡️ Швеция@auth.quattro-cloud.ru"
+        },
+        "dungeoncrusher.exe": {
+          "seconds": 65,
+          "last_title": "Dungeon Crusher"
+        }
+      },
+      "manual": []
+    },
+    "2026-07-10": {
+      "auto": {
+        "dungeoncrusher.exe": {
+          "seconds": 475,
+          "last_title": "Dungeon Crusher"
+        },
+        "python.exe": {
+          "seconds": 500,
+          "last_title": "KUS Pro v1.0.0 — Системная утилита"
+        },
+        "wezterm-gui.exe": {
+          "seconds": 32855,
+          "last_title": "MC | Найти и войти на ПК KusXXX"
+        },
+        "explorer.exe": {
+          "seconds": 60,
+          "last_title": "(без заголовка)"
+        },
+        "browser.exe": {
+          "seconds": 1030,
+          "last_title": "Редактор скриншотов - 2026-07-10_22-50-32.png"
+        },
+        "cmd.exe": {
+          "seconds": 25,
+          "last_title": "Administrator:  KUS Pro"
+        },
+        "SnippingTool.exe": {
+          "seconds": 10,
+          "last_title": "Наложение Ножниц"
+        },
+        "ShellExperienceHost.exe": {
+          "seconds": 5,
+          "last_title": "Список переходов для Microsoft 365 Copilot"
+        },
+        "ShellHost.exe": {
+          "seconds": 5,
+          "last_title": "Быстрые настройки"
+        },
+        "nekobox.exe": {
+          "seconds": 5,
+          "last_title": "[Системный прокси] Iblis 5.10.23 2026-03-12 [VLESS]🇵🇱 🎮 ⭐️ 0.1X - LTE №7 - Польша@auth.quattro-cloud.ru"
+        },
+        "Discord.exe": {
+          "seconds": 65,
+          "last_title": "#общее | Залупачесы - Discord"
+        },
+        "winws.exe": {
+          "seconds": 20,
+          "last_title": "zapret: general (FAKE TLS AUTO ALT3)"
+        },
+        "Telegram.exe": {
+          "seconds": 120,
+          "last_title": "‎Никита – (8235)"
+        },
+        "Code.exe": {
+          "seconds": 15,
+          "last_title": "ИНСТРУКЦИЯ_ДЛЯ_ЗАПУСКА.md - Visual Studio Code"
+        }
+      },
+      "manual": []
+    },
+    "2026-07-11": {
+      "auto": {
+        "python.exe": {
+          "seconds": 170,
+          "last_title": "KUS Pro v1.0.0 — Системная утилита"
+        },
+        "browser.exe": {
+          "seconds": 55,
+          "last_title": "(69) География Уральских пельменей - Китай, Монголия, Таиланд | Уральские пельмени - YouTube — Яндекс Браузер"
+        },
+        "SnippingTool.exe": {
+          "seconds": 5,
+          "last_title": "Наложение Ножниц"
+        },
+        "wezterm-gui.exe": {
+          "seconds": 125,
+          "last_title": "MC | Запрос на анализ"
+        },
+        "explorer.exe": {
+          "seconds": 10,
+          "last_title": "Переключение задач"
+        }
+      },
+      "manual": []
+    }
+  }
+}

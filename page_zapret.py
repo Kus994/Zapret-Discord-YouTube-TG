@@ -178,7 +178,7 @@ def _save_ver(name):
 def _fn_start(log_func, progress_func, bat_path, ver_dir):
     global _proc
 
-    for name in ["zapret", "winws.exe"]:
+    for name in ["zapret", "winws.exe", "winws2.exe"]:
         try:
             subprocess.run(
                 ["sc", "stop", name] if not name.endswith(".exe")
@@ -195,15 +195,28 @@ def _fn_start(log_func, progress_func, bat_path, ver_dir):
 
     log_func("Запуск: {}".format(bat.name), "INFO")
 
-    # Запускаем bat-файл через cmd.exe — как при двойном клике в проводнике.
-    # Это гарантирует что все переменные окружения service.bat будут установлены.
-    cmd_list = ["cmd.exe", "/c", str(bat)]
-    log_func("CMD: cmd.exe /c {} (в фоне)".format(bat.name), "INFO")
+    # Парсим аргументы из bat-файла и запускаем winws.exe напрямую
+    # Это исключает появление окна консоли
+    from page_zapret import _parse_bat_winws_args
+    ver_dir_path = Path(ver_dir)
+    winws_exe = ver_dir_path / "bin" / "winws.exe"
+    if not winws_exe.exists():
+        winws_exe = ver_dir_path / "winws2.exe"
+    if not winws_exe.exists():
+        log_func("winws.exe/winws2.exe не найден", "ERR")
+        return
+
+    args = _parse_bat_winws_args(bat)
+    if not args:
+        log_func("Не удалось извлечь аргументы из {}".format(bat.name), "ERR")
+        return
+
+    log_func("CMD: {} {}".format(winws_exe.name, " ".join(args[:5]) + "..."), "INFO")
     try:
         with _proc_lock:
             _proc = subprocess.Popen(
-                cmd_list,
-                cwd=str(bat.parent),
+                [str(winws_exe)] + args,
+                cwd=str(ver_dir_path),
                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                 creationflags=CNW, startupinfo=SUH,
                 text=True, encoding="cp866", errors="replace",
@@ -241,11 +254,12 @@ def _fn_stop(log_func, progress_func, ver_dir=""):
             log_func("Zapret остановлен.", "OK")
         except Exception as e:
             log_func("Ошибка: {}".format(e), "WARN")
-    try:
-        subprocess.run(["taskkill", "/F", "/IM", "winws.exe"],
-                       creationflags=CNW, capture_output=True, timeout=5)
-    except Exception:
-        pass
+    for exe in ["winws.exe", "winws2.exe"]:
+        try:
+            subprocess.run(["taskkill", "/F", "/IM", exe],
+                           creationflags=CNW, capture_output=True, timeout=5)
+        except Exception:
+            pass
     with _proc_lock:
         _proc = None
     progress_func(1.0)
