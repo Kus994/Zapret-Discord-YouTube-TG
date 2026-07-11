@@ -574,7 +574,7 @@ class MainWindow(QMainWindow):
     def _tray_switch_strategy(self, ver, bat_name):
         """Переключает стратегию zapret из трея."""
         try:
-            from page_zapret import _is_running, _fn_start, _fn_stop, _ver_to_path, _save_ver
+            from page_zapret import _is_running, _fn_start, _fn_stop, _ver_to_path, _save_ver, _save_preset
             from worker import Worker
             from pathlib import Path
 
@@ -590,6 +590,7 @@ class MainWindow(QMainWindow):
 
             # Запускаем новую
             _save_ver(ver)
+            _save_preset(bat_name)
             ver_dir = str(_ver_to_path(ver))
             self._zapret_worker = Worker(_fn_start, str(bat_path), ver_dir)
             self._zapret_worker.start()

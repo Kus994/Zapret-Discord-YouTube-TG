@@ -194,6 +194,20 @@ def _save_ver(name):
     (ZAPRET_DIR / "current_version.txt").write_text(name, encoding="utf-8")
 
 
+def _save_preset(bat_name):
+    """Сохраняет имя текущего пресета для восстановления после перезагрузки."""
+    ZAPRET_DIR.mkdir(parents=True, exist_ok=True)
+    (ZAPRET_DIR / "current_preset.txt").write_text(bat_name, encoding="utf-8")
+
+
+def _saved_preset():
+    """Читает сохранённый пресет."""
+    pf = ZAPRET_DIR / "current_preset.txt"
+    if pf.exists():
+        return pf.read_text(encoding="utf-8").strip()
+    return ""
+
+
 # ════════════════════════════════════════════════════════════════════ #
 #  Worker-функции (выполняются в фоновом потоке)                       #
 # ════════════════════════════════════════════════════════════════════ #
@@ -1330,6 +1344,7 @@ class ZapretPage(BasePage):
             self.log("general.bat не найден в {}".format(ver_dir), "ERR")
             return
         _save_ver(ver)
+        _save_preset("general.bat")
         
         # Сохраняем пресет для автозапуска
         try:
@@ -1462,7 +1477,8 @@ class ZapretPage(BasePage):
         bat_path = str(_ver_to_path(ver) / bat_name)
         ver_dir  = str(_ver_to_path(ver))
         _save_ver(ver)
-        
+        _save_preset(bat_name)
+
         # Сохраняем выбранный пресет для автозапуска
         try:
             from config_manager import set_value

@@ -323,7 +323,7 @@ def _try_autostart_zapret(preset_name):
     """Запускает zapret с сохранённым пресетом при старте."""
     try:
         from app_paths import ZAPRET_DIR
-        from page_zapret import _save_ver, _get_versions, _is_running, _fn_start, _ver_to_path
+        from page_zapret import _save_ver, _get_versions, _is_running, _fn_start, _ver_to_path, _saved_preset
         from worker import Worker
 
         versions = _get_versions()
@@ -466,9 +466,13 @@ def main():
     autostart_tg_proxy = False
     try:
         from config_manager import get_value
+        from page_zapret import _saved_preset
         start_minimized = bool(get_value("start_minimized", False))
         autostart_zapret = bool(get_value("autostart_zapret", False))
         autostart_zapret_preset = str(get_value("autostart_zapret_preset", ""))
+        # Фоллбэк: читаем из файла если конфиг пустой
+        if not autostart_zapret_preset:
+            autostart_zapret_preset = _saved_preset()
         autostart_tg_proxy = bool(get_value("autostart_tg_proxy", False))
     except Exception:
         pass
