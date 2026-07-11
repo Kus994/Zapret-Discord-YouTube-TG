@@ -57,16 +57,19 @@ def _get_game_filter_ports(ver_dir):
 
 
 def _parse_bat_winws_args(bat_path: Path):
-    """Парсит bat-файл и извлекает аргументы winws.exe (без start /min)."""
-    text = bat_path.read_text(encoding="utf-8", errors="replace")
+    """Парсит bat-файл и извлекает аргументы winws.exe/winws2.exe."""
+    text = bat_path.read_text(encoding="utf-8-sig", errors="replace")
     text = re.sub(r'\^\s*\n', ' ', text)
+    
+    # Формат 1: start "..." /min "winws.exe" args...
     m = re.search(
-        r'start\s+"[^"]*"\s*/min\s+"[^"]*winws\.exe"\s+(.*)',
+        r'start\s+"[^"]*"\s*/min\s+"[^"]*winws2?\.exe"\s+(.*)',
         text, re.IGNORECASE | re.DOTALL
     )
+    # Формат 2: "%BIN%winws.exe" args... (без start)
     if not m:
         m = re.search(
-            r'start\s+"[^"]*"\s*/min\s+\S*winws\.exe\s+(.*)',
+            r'"?[^"]*winws2?\.exe"?\s+(.*)',
             text, re.IGNORECASE | re.DOTALL
         )
     if not m:
@@ -74,8 +77,12 @@ def _parse_bat_winws_args(bat_path: Path):
     args_str = m.group(1).strip()
     ver_dir = bat_path.parent
     args_str = args_str.replace('%~dp0', str(ver_dir) + os.sep)
+    args_str = args_str.replace('%ZAPRET%', str(ver_dir) + os.sep)
+    args_str = args_str.replace('%LUA%', str(ver_dir / 'lua') + os.sep)
+    args_str = args_str.replace('%FILES%', str(ver_dir / 'files') + os.sep)
     args_str = args_str.replace('%BIN%', str(ver_dir / 'bin') + os.sep)
     args_str = args_str.replace('%LISTS%', str(ver_dir / 'lists') + os.sep)
+    args_str = args_str.replace('%WINV%', str(ver_dir / 'windivert.filter') + os.sep)
     game_tcp, game_udp = _get_game_filter_ports(ver_dir)
     args_str = args_str.replace('%GameFilterTCP%', game_tcp)
     args_str = args_str.replace('%GameFilterUDP%', game_udp)
