@@ -56,10 +56,14 @@ build.bat
 
 ```
 ├── main.py           # Точка входа
-├── page_*.py         # Страницы UI
-├── modules/          # Бизнес-логика
-├── widgets.py        # Кастомные виджеты
-├── theme.py          # Тема и стили
+├── run.bat           # Запуск (Windows)
+├── build.bat         # Сборка .exe
+├── src/              # Исходный код
+│   ├── page_*.py     # Страницы UI
+│   ├── modules/      # Бизнес-логика
+│   ├── widgets.py    # Кастомные виджеты
+│   ├── theme.py      # Тема и стили
+│   └── ...
 ├── config.json       # Настройки
 └── requirements.txt  # Зависимости
 ```
