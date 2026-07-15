@@ -668,7 +668,7 @@ class NetworkPage(BasePage):
 
     def _on_speed_test_result(self, result):
         self._btn_speed_test.setEnabled(True)
-        self._btn_speed_test.setText("🚀  Тест скорости")
+        self._btn_speed_test.setText("🚀  Замер")
         if result:
             down = result.get("download_mbps", 0)
             up = result.get("upload_mbps", 0)

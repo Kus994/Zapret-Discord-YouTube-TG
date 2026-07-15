@@ -264,6 +264,11 @@ class UpdatesPage(BasePage):
 
     def _check_kus_update(self):
         self._update_status.setText("Проверка...")
+        self._update_status.setStyleSheet("color:#5a5248; font-size:12px; background:transparent;")
+        self._btn_download.setEnabled(False)
+        if hasattr(self, '_check_thread') and self._check_thread.isRunning():
+            self._check_thread.quit()
+            self._check_thread.wait(1000)
         self._check_thread = _UpdateCheckThread()
         self._check_thread.result.connect(self._on_kus_result)
         self._check_thread.start()
@@ -272,10 +277,14 @@ class UpdatesPage(BasePage):
         if has and lat:
             self._update_status.setText("Доступна версия {} (текущая: {})".format(lat, cur))
             self._update_status.setStyleSheet("color:#00ff88; font-size:12px; font-weight:bold; background:transparent;")
-            self._btn_download.setEnabled(bool(url_or_err))
             self._pending_url = url_or_err
+            if url_or_err:
+                self._btn_download.setEnabled(True)
+            else:
+                self._btn_download.setEnabled(False)
+                self.log("Ссылка на скачивание не найдена в релизе", "WARN")
         elif lat == "":
-            self._update_status.setText("Ошибка: {}".format(url_or_err))
+            self._update_status.setText("Ошибка: {}".format(url_or_err or "неизвестная ошибка"))
             self._update_status.setStyleSheet("color:#ff4444; font-size:12px; background:transparent;")
             self._btn_download.setEnabled(False)
         else:
@@ -286,8 +295,10 @@ class UpdatesPage(BasePage):
     def _download_kus_update(self):
         url = getattr(self, '_pending_url', '')
         if url:
+            self.log("Открытие страницы скачивания: {}".format(url), "INFO")
             webbrowser.open(url)
-            self.log("Открыта страница скачивания", "OK")
+        else:
+            self.log("Нет ссылки для скачивания. Нажмите «Проверить обновления».", "WARN")
 
     # ── Windows ──────────────────────────────────────────────────────
 
@@ -340,11 +351,11 @@ class UpdatesPage(BasePage):
                 return update_tg_proxy(log_func, progress_func)
 
         from worker import Worker
-        w = Worker(_worker)
-        w.line_out.connect(self.log)
-        w.progress.connect(lambda p: self._comp_progress.setValue(int(p * 100)))
-        w.finished.connect(self._on_comp_updated)
-        w.start()
+        self._comp_worker = Worker(_worker)
+        self._comp_worker.line_out.connect(self.log)
+        self._comp_worker.progress.connect(lambda p: self._comp_progress.setValue(int(p * 100)))
+        self._comp_worker.result.connect(self._on_comp_updated)
+        self._comp_worker.start()
 
     def _on_comp_updated(self, result):
         self._comp_progress.setValue(100)

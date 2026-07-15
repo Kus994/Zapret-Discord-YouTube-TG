@@ -1361,6 +1361,10 @@ class ZapretPage(BasePage):
             "Стратегия: general\nВерсия: {}".format(ver)
         )
 
+        if hasattr(self, '_start_w') and self._start_w and self._start_w.isRunning():
+            self._start_w.finished.disconnect()
+            self._start_w.quit()
+            self._start_w.wait(1000)
         self._start_w = Worker(_fn_start, bat_path, ver_dir)
         self._start_w.line_out.connect(self.log)
         self._start_w.progress.connect(self.set_progress)
@@ -1494,6 +1498,10 @@ class ZapretPage(BasePage):
             "Стратегия: {}\nВерсия: {}".format(Path(bat_name).stem, ver)
         )
 
+        if hasattr(self, '_start_w') and self._start_w and self._start_w.isRunning():
+            self._start_w.finished.disconnect()
+            self._start_w.quit()
+            self._start_w.wait(1000)
         self._start_w = Worker(_fn_start, bat_path, ver_dir)
         self._start_w.line_out.connect(self.log)
         self._start_w.progress.connect(self.set_progress)
@@ -1503,6 +1511,10 @@ class ZapretPage(BasePage):
 
     def _stop(self):
         vd = self._get_ver_dir() or ""
+        if hasattr(self, '_stop_w') and self._stop_w and self._stop_w.isRunning():
+            self._stop_w.finished.disconnect()
+            self._stop_w.quit()
+            self._stop_w.wait(1000)
         self._stop_w = Worker(_fn_stop, vd)
         self._stop_w.line_out.connect(self.log)
         self._stop_w.progress.connect(self.set_progress)

@@ -255,7 +255,7 @@ class SettingsPage(BasePage):
 
         author_row = QHBoxLayout()
         author_row.addWidget(QLabel("Автор:"))
-        link = QLabel('<a href="https://github.com/Kus993" style="color:#00ff88; text-decoration:none;">Kus993</a>')
+        link = QLabel('<a href="https://github.com/Kus994" style="color:#00ff88; text-decoration:none;">Kus994</a>')
         link.setOpenExternalLinks(True)
         author_row.addWidget(link)
         author_row.addStretch()
@@ -264,7 +264,7 @@ class SettingsPage(BasePage):
         btn_github = QPushButton("GitHub")
         btn_github.setFixedHeight(36)
         btn_github.clicked.connect(
-            lambda: webbrowser.open("https://github.com/Kus993/Zapret Discord YouTube TG"))
+            lambda: webbrowser.open("https://github.com/Kus994/Zapret-Discord-YouTube-TG"))
         auth_lay.addWidget(btn_github)
 
         dl.addWidget(grp_author)

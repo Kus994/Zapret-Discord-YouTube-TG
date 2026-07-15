@@ -313,7 +313,7 @@ def check_kus_pro_update(log_func=None):
     from theme import VERSION
 
     try:
-        api = "https://api.github.com/repos/Kus993/Zapret-Discord-YouTube-TG/releases/latest"
+        api = "https://api.github.com/repos/Kus994/Zapret-Discord-YouTube-TG/releases/latest"
         headers = {
             "User-Agent": "KUS-Pro/3.0",
             "Accept": "application/vnd.github+json",
@@ -343,9 +343,19 @@ def check_kus_pro_update(log_func=None):
                 download_url = asset["browser_download_url"]
                 break
 
+        # Fallback: ссылка на страницу релиза
+        release_url = data.get("html_url", "")
+
+        if not download_url and release_url:
+            download_url = release_url
+
         if log_func:
             if has_update:
                 log_func("Доступно обновление KUS Pro: {} → {}".format(current, latest), "INFO")
+                if download_url:
+                    log_func("Ссылка: {}".format(download_url), "INFO")
+                else:
+                    log_func("Ссылка на скачивание не найдена", "WARN")
             else:
                 log_func("KUS Pro актуален (v{})".format(current), "OK")
 
@@ -354,4 +364,4 @@ def check_kus_pro_update(log_func=None):
     except Exception as e:
         if log_func:
             log_func("Не удалось проверить обновления: {}".format(e), "WARN")
-        return False, VERSION, "", ""
+        return False, VERSION, "", str(e)

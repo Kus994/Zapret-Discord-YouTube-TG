@@ -17,7 +17,7 @@ HEAVY_PROCESSES = [
     "SteamWebHelper.exe", "EpicGamesLauncher.exe",
     "Battle.net.exe", "Origin.exe", "GOGGalaxy.exe",
     "vivaldi.exe", "brave.exe", "opera.exe", "operaGX.exe",
-    "Telegram.exe", " qbittorrent.exe", "uTorrent.exe",
+    "Telegram.exe", "qbittorrent.exe", "uTorrent.exe",
 ]
 
 # Службы Windows, которые нагружают систему и безопасно отключать

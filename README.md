@@ -4,17 +4,18 @@
 
 ## Возможности
 
-- **Очистка системы** — удаление мусора, временных файлов
+- **Очистка системы** — удаление мусора, временных файлов, кэша браузеров
 - **Мониторинг** — CPU, RAM, диск, сеть в реальном времени
 - **Безопасность** — аудит автозагрузки, проверка системы
-- **Zapret** — обход DPI блокировок (Discord, YouTube, Telegram)
-- **Telegram Proxy** — MTProto прокси
-- **Game Mode** — оптимизация для игр
-- **Экспорт данных** — выгрузка отчётов
+- **Оптимизация** — настройка производительности, энергосбережения
+- **Игровой режим** — оптимизация для игр, закрытие фоновых процессов
+- **Telegram Proxy** — локальный MTProto прокси для подключения
+- **Хронометраж** — отслеживание времени за приложениями
+- **Экспорт данных** — выгрузка отчётов и статистики
 
 ## Быстрая установка
 
-1. Скачайте [последний релиз](https://github.com/Kus993/Zapret Discord YouTube TG/releases/latest)
+1. Скачайте [последний релиз](https://github.com/Kus994/Zapret-Discord-YouTube-TG/releases/latest)
 2. Распакуйте в папку без кириллицы (например `C:\KUS Pro`)
 3. Запустите `run.bat` от имени администратора
 
@@ -23,8 +24,8 @@
 ## Требования
 
 - Windows 10/11 (64-bit)
-- Python 3.8+
-- Права администратора (для Zapret)
+- Python 3.10+
+- Права администратора (для некоторых функций)
 
 ## Запуск
 
@@ -33,7 +34,7 @@
 run.bat
 
 # Или вручную
-pip install PyQt5
+pip install PyQt5 psutil certifi
 python main.py
 ```
 
@@ -50,16 +51,17 @@ build.bat
 ├── main.py           # Точка входа
 ├── page_*.py         # Страницы UI
 ├── modules/          # Бизнес-логика
-├── zapret/           # DPI bypass
-├── tg_proxy/         # Telegram Proxy
-└── config.json       # Настройки
+├── widgets.py        # Кастомные виджеты
+├── theme.py          # Тема и стили
+├── config.json       # Настройки
+└── requirements.txt  # Зависимости
 ```
+
+## Лицензия
+
+MIT License — см. [LICENSE](LICENSE)
 
 ## Поддержка
 
 - [DonationAlerts](https://www.donationalerts.com/r/kus_777) — донаты
-- [GitHub Issues](https://github.com/Kus993/Zapret Discord YouTube TG/issues) — баг-репорты
-
-## Лицензия
-
-MIT License
+- [GitHub Issues](https://github.com/Kus994/Zapret-Discord-YouTube-TG/issues) — баг-репорты

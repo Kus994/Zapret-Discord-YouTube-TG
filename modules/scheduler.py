@@ -74,7 +74,7 @@ def get_schedule_info() -> dict:
 
     try:
         cmd_result = subprocess.run(
-            ["cmd.exe", "/c", 'schtasks /Query /TN "{}" /FO LIST /V"'.format(TASK_NAME)],
+            ["cmd.exe", "/c", 'schtasks /Query /TN "{}" /FO LIST /V'.format(TASK_NAME)],
             capture_output=True,
             creationflags=CREATE_NO_WINDOW,
             timeout=10,

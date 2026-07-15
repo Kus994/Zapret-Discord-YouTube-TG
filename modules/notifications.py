@@ -23,6 +23,7 @@ class ToastNotification(QWidget):
         self.setWindowFlags(FramelessWindowHint | WindowStaysOnTopHint | Tool)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.setFixedWidth(380)
+        self._duration = duration
 
         # Цвета по уровню
         colors = {
@@ -86,7 +87,7 @@ class ToastNotification(QWidget):
         self.show()
         self.raise_()
         self._fade_in.start()
-        self._timer.start(3000)
+        self._timer.start(self._duration)
 
     def _close(self):
         self._fade_out = QPropertyAnimation(self, b"windowOpacity")

@@ -398,9 +398,6 @@ class TgProxyPage(BasePage):
             "Type:      MTProto",
             "Secret:    {}".format(secret_display),
         ])
-        cfg_card.lay.addWidget(self._cfg_block)
-
-        # Proxy deep link
         self._proxy_link_label = _label("", size=11, color=INFO)
         self._proxy_link_label.setOpenExternalLinks(True)
         self._proxy_link_label.setTextInteractionFlags(Qt.TextSelectableByMouse)

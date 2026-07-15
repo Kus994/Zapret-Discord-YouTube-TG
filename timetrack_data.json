@@ -285,6 +285,43 @@
         }
       },
       "manual": []
+    },
+    "2026-07-15": {
+      "auto": {
+        "Telegram.exe": {
+          "seconds": 360,
+          "last_title": "‎Никита – (8631)"
+        },
+        "python.exe": {
+          "seconds": 130,
+          "last_title": "KUS Pro"
+        },
+        "explorer.exe": {
+          "seconds": 35,
+          "last_title": "Окно переполнения области уведомлений."
+        },
+        "wezterm-gui.exe": {
+          "seconds": 130,
+          "last_title": "MC | Навигация к папке Zapret-Discord-YouT..."
+        },
+        "browser.exe": {
+          "seconds": 195,
+          "last_title": "почта — Яндекс: нашлось 12 млн результатов — Яндекс Браузер"
+        },
+        "cmd.exe": {
+          "seconds": 5,
+          "last_title": "Administrator:  KUS Pro"
+        },
+        "dungeoncrusher.exe": {
+          "seconds": 20,
+          "last_title": "Dungeon Crusher"
+        },
+        "SearchHost.exe": {
+          "seconds": 5,
+          "last_title": "Поиск"
+        }
+      },
+      "manual": []
     }
   }
 }

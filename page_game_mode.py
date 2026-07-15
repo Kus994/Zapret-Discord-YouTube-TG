@@ -19,6 +19,7 @@ from PyQt5.QtCore import Qt, QTimer
 from base_page import BasePage
 from config_manager import load_config, save_config
 from qt_compat import *
+from theme import TEXT_MAIN
 from modules.game_mode import EXTRA_KILL_ONLY
 
 

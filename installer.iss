@@ -3,8 +3,8 @@
 
 #define MyAppName "KUS Pro"
 #define MyAppVersion "3.2.0"
-#define MyAppPublisher "Kus993"
-#define MyAppURL "https://github.com/Kus993/KusXXX"
+#define MyAppPublisher "Kus"
+#define MyAppURL "https://github.com/Kus994/Zapret-Discord-YouTube-TG"
 #define MyAppExeName "KUS_Pro.exe"
 
 [Setup]

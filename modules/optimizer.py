@@ -116,8 +116,8 @@ def optimize_system(log_func, progress_func, options=None):
         browsers = detect_installed_browsers()
         if browsers:
             log_func("  Найдены: {}".format(", ".join(browsers)))
-            freed = clean_browser_cache(log_func, progress_func)
-            total_freed += freed
+            freed_dict = clean_browser_cache(log_func, progress_func)
+            total_freed += sum(freed_dict.values())
         else:
             log_func("  Браузеры с кэшем не найдены", "WARN")
         step += 1

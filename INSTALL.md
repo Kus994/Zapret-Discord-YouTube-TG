@@ -4,7 +4,7 @@
 
 ### Шаг 1: Скачать
 
-Скачайте последний релиз: [GitHub Releases](https://github.com/Kus993/Zapret Discord YouTube TG/releases/latest)
+Скачайте последний релиз: [GitHub Releases](https://github.com/Kus994/Zapret-Discord-YouTube-TG/releases/latest)
 
 ### Шаг 2: Распаковать
 
@@ -102,6 +102,6 @@ KusXXX-main/
 
 ## Контакты
 
-- **GitHub**: [Kus993](https://github.com/Kus993)
+- **GitHub**: [Kus994](https://github.com/Kus994)
 - **Поддержка**: [DonationAlerts](https://www.donationalerts.com/r/kus_777)
 - **Zapret**: [bol-van/zapret2](https://github.com/bol-van/zapret2)

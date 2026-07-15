@@ -593,6 +593,7 @@ class MainWindow(QMainWindow):
             _save_preset(bat_name)
             ver_dir = str(_ver_to_path(ver))
             self._zapret_worker = Worker(_fn_start, str(bat_path), ver_dir)
+            self._zapret_worker.finished.connect(self._rebuild_tray_menu)
             self._zapret_worker.start()
 
             # Уведомление

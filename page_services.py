@@ -90,6 +90,9 @@ class ServicesPage(BasePage):
         self._set_busy(True)
         self._status_label.setText("Загрузка списка служб...")
 
+        if hasattr(self, '_worker') and self._worker and self._worker.isRunning():
+            self._worker.quit()
+            self._worker.wait(1000)
         self._worker = _ServicesWorker(self)
         self._worker.log.connect(self.log)
         self._worker.progress.connect(self.set_progress)
